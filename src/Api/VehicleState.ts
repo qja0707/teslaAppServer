@@ -1,12 +1,12 @@
-import fetch from "node-fetch";
+
 import { IVehicleAll } from "../Types";
 import { entryUrl } from "./Common";
+const fetch = require('node-fetch')
 
 export const requsetVehicleState = async (
   accessToken: string,
   id: number,
 ): Promise<IVehicleAll | undefined> => {
-  console.log('***********requsetVehicleState************');
   try {
     const auth = 'Bearer ' + accessToken;
 
@@ -21,17 +21,12 @@ export const requsetVehicleState = async (
     });
 
     if (!httpResponse.ok) {
-      console.log('httpResponse not ok');
-      console.log('httpResponse : ', httpResponse);
+      console.log('httpResponse not ok');      
       return;
     }
     const result:any = await httpResponse.json();
 
-    console.log('result : ', result);
-
     const vehicle_status_all: IVehicleAll = result.response;
-
-    console.log('vehicle_status_all : ', vehicle_status_all);
 
     return vehicle_status_all;
   } catch (e) {
