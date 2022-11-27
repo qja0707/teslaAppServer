@@ -8,6 +8,7 @@ export interface IAuthData {
 }
 
 export interface IStoredState {
+  _id: number;
   id: number;
   date: string;
   battery_level: number,
@@ -89,6 +90,11 @@ export const readAuthInfo = async () => {
 export const writeVehicleData = async (vehicleData: IStoredState): Promise<void> => {
   try {
     const realm = await getRealm();
+
+    const results = realm.objects<IStoredState>(VEHICLE_STATE).sorted('_id') as unknown as Realm.Results<IStoredState & Realm.Object<IStoredState, never>>
+    const _id = results.length > 0 ? results[results.length - 1]._id + 1 : 1;
+
+    vehicleData._id = _id
 
     realm.write(() => {
       realm.create(VEHICLE_STATE, vehicleData)
