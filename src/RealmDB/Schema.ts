@@ -104,7 +104,7 @@ export const writeVehicleData = async (vehicleData: IStoredState): Promise<void>
   }
 }
 
-export const readVehicleData = async (id: number, from: string, to?: string) => {
+export const readVehicleData = async (id: number, from: string, to: string) => {
   try {
     const realm = await getRealm()
 

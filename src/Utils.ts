@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { requsetVehicleState } from "./Api/VehicleState";
+import Wake from "./Api/Wake";
 import { IAuthData, IStoredState, readAuthInfo, writeVehicleData } from "./RealmDB/Schema";
 
 export const getVehicleSateDatas = async (): Promise<void> => {
@@ -10,9 +11,12 @@ export const getVehicleSateDatas = async (): Promise<void> => {
     console.log("authInfo:", authInfo)
     if (!authInfo) {
       return;
-    }
+    }   
 
-    authInfo.forEach((info => {
+    authInfo.forEach((async info => {
+      await Wake(info.access_token, info.id)
+      console.log("after wake")
+      
       requsetVehicleState(info.access_token, info.id).then(data => {
         if (!data) {
           return
